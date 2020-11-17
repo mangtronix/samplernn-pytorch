@@ -267,13 +267,13 @@ class Generator(Runner):
                 if i % rnn.n_frame_samples != 0:
                     continue
 
-                prev_samples = torch.autograd.Variable(
-                    2 * utils.linear_dequantize(
-                        sequences[:, i - rnn.n_frame_samples : i],
-                        self.model.q_levels
-                    ).unsqueeze(1),
-                    volatile=True
-                )
+                with torch.no_grad():
+                    prev_samples = torch.autograd.Variable(
+                        2 * utils.linear_dequantize(
+                            sequences[:, i - rnn.n_frame_samples : i],
+                            self.model.q_levels
+                        ).unsqueeze(1)
+                    )
                 # print("Tier {}: prev_samples from {} to {}, shape {}: {}".format(tier_index, i - rnn.n_frame_samples, i, np.shape(prev_samples), prev_samples))
                 if self.cuda:
                     prev_samples = prev_samples.cuda()
@@ -296,10 +296,10 @@ class Generator(Runner):
                 # print("Tier {} frame level outputs shape {}".format(tier_index, np.shape(frame_level_outputs[tier_index])))
 
             # print(sequences[:, i - bottom_frame_size : i])
-            prev_samples = torch.autograd.Variable(
-                sequences[:, i - bottom_frame_size : i],
-                volatile=True
-            )
+            with torch.no_grad():
+                prev_samples = torch.autograd.Variable(
+                    sequences[:, i - bottom_frame_size : i]
+                )
             # print("Tier {}: prev_samples from {} to {}, shape {}: {}".format(tier_index, i - bottom_frame_size, i, np.shape(prev_samples), prev_samples))
             if self.cuda:
                 prev_samples = prev_samples.cuda()
