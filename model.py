@@ -280,7 +280,7 @@ class Generator(Runner):
 
                 l = len(self.model.frame_level_rnns) - 1
                 if tier_index == l:
-                    print("No upper tier conditioning")
+                    # print("No upper tier conditioning")
                     upper_tier_conditioning = None
                 else:
                     frame_index = (i // rnn.n_frame_samples) % \
@@ -288,12 +288,12 @@ class Generator(Runner):
                     upper_tier_conditioning = \
                         frame_level_outputs[tier_index + 1][:, frame_index, :] \
                                            .unsqueeze(1)
-                    print("Frame index {}, upper_tier_conditioning shape {}".format(frame_index, np.shape(upper_tier_conditioning)))
+                    # print("Frame index {}, upper_tier_conditioning shape {}".format(frame_index, np.shape(upper_tier_conditioning)))
 
                 frame_level_outputs[tier_index] = self.run_rnn(
                     rnn, prev_samples, upper_tier_conditioning
                 )
-                print("Tier {} frame level outputs shape {}".format(tier_index, np.shape(frame_level_outputs[tier_index])))
+                # print("Tier {} frame level outputs shape {}".format(tier_index, np.shape(frame_level_outputs[tier_index])))
 
             # print(sequences[:, i - bottom_frame_size : i])
             prev_samples = torch.autograd.Variable(
@@ -308,10 +308,10 @@ class Generator(Runner):
                                       .unsqueeze(1)
             sample_dist = self.model.sample_level_mlp(prev_samples, upper_tier_conditioning)
             sample_dist = sample_dist.div(sampling_temperature).squeeze(1).exp_().data
-            print("Sample dist {}".format(np.shape(sample_dist)))
-            print("Before: {}".format(sequences[:, i]))
+            # print("Sample dist {}".format(np.shape(sample_dist)))
+            # print("Before: {}".format(sequences[:, i]))
             sequences[:, i] = sample_dist.multinomial(1).squeeze(1)
-            print("After {}".format(sequences[:, i]))
+            # print("After {}".format(sequences[:, i]))
 
         torch.backends.cudnn.enabled = True
 
