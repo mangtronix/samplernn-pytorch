@@ -2,6 +2,46 @@
 
 A PyTorch implementation of [SampleRNN: An Unconditional End-to-End Neural Audio Generation Model](https://arxiv.org/abs/1612.07837).
 
+Updated by Mangtronix for easier generation of output audio
+
+## Installation
+```
+$ git clone https://github.com/mangtronix/samplernn-pytorch.git
+$ cd samplernn-pytorch
+$ conda create -n samplernn python=3.6.8 anaconda
+$ conda activate samplernn
+$ pip install -r requirements.txt
+$ conda install ffmpeg
+```
+
+## Get training audio and process it
+```
+# Get audio from a youtube video, save as "piano" dataset
+$ cd datasets
+$ ./download-from-youtube.sh "https://www.youtube.com/watch?v=EhO_MrRfftU" 8 piano
+$ cd ..
+```
+
+## Train on the dataset. Can be run again to continue training
+```
+# Train on piano dataset
+# with specific parameters, generating 2x 10s of audio per epoch
+$ python train.py --exp piano --frame_sizes 16 4 --n_rnn 2 --sample_length=160000 --sampling_temperature=0.95 --n_samples=2 --dataset piano
+
+# Results will be in results/...
+```
+
+## Generate audio from trained model
+Can generate different lengths of audio. 
+```
+# Generate 10s of audio from latest checkpoint of piano
+$ python generate.py -d piano -l 10 -o piano-10s.wav
+```
+
+
+# Original Documentation
+
+
 ![A visual representation of the SampleRNN architecture](http://deepsound.io/images/samplernn.png)
 
 It's based on the reference implementation in Theano: https://github.com/soroushmehr/sampleRNN_ICLR2017. Unlike the Theano version, our code allows training models with arbitrary number of tiers, whereas the original implementation allows maximum 3 tiers. However it doesn't allow using LSTM units (only GRU). For more details and motivation behind rewriting this model to PyTorch, see our blog post: http://deepsound.io/samplernn_pytorch.html.
