@@ -12,6 +12,7 @@ $ conda create -n samplernn python=3.6.8 anaconda
 $ conda activate samplernn
 $ pip install -r requirements.txt
 $ conda install ffmpeg
+$ conda install -c conda-forge youtube-dl
 ```
 
 ## Get training audio and process it
