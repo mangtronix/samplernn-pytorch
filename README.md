@@ -43,7 +43,7 @@ $ python generate.py -d piano -l 10 -o piano-10s.wav
 # Original Documentation
 
 
-![A visual representation of the SampleRNN architecture](http://deepsound.io/images/samplernn.png)
+![A visual representation of the SampleRNN architecture](https://storage.googleapis.com/groundai-web-prod/media%2Fusers%2Fuser_14%2Fproject_49251%2Fimages%2Fx1.png)
 
 It's based on the reference implementation in Theano: https://github.com/soroushmehr/sampleRNN_ICLR2017. Unlike the Theano version, our code allows training models with arbitrary number of tiers, whereas the original implementation allows maximum 3 tiers. However it doesn't allow using LSTM units (only GRU). For more details and motivation behind rewriting this model to PyTorch, see our blog post: http://deepsound.io/samplernn_pytorch.html.
 
